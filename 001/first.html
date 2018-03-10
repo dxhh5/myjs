@@ -24,6 +24,32 @@
             75%{opacity:100}
             100%{opacity:0}
         }
+        @keyframes qi {
+            0%{opacity:0}            
+            20%{opacity:100}
+            40%{opacity:0}
+            100%{opacity:0}
+        }
+        @keyframes hao {
+            0%{opacity:0}            
+            20%{opacity:0}
+            40%{opacity:100}
+            100%{opacity:0}
+        }
+        @keyframes bu {
+            0%{opacity:0}            
+            20%{opacity:0}
+            40%{opacity:0}
+            60%{opacity:100}
+            100%{opacity:0}
+        }
+        @keyframes li {
+            0%{opacity:0}            
+            40%{opacity:0}
+            60%{opacity:0}
+            80%{opacity:100}
+            100%{opacity:0}
+        }
         p{
             font-size:100px;
             position:absolute;
@@ -37,11 +63,32 @@
         #two{
             animation: mysecond 2s infinite;
         }
+        #q{
+            background-color:red;
+            animation: qi 10s infinite;
+        }
+        #h{
+            background-color:lightgreen;
+            animation: hao 10s infinite;
+        }
+        #b{
+            background-color:red;
+            animation: bu 10s infinite;
+        }
+        #l{
+            background-color:black;
+            color:white;
+            animation: li 10s infinite;
+        }
      </style>
 </head>
 <body>
     <audio src="images/123521.mp3"  autoplay="autoplay" loop="loop">
     </audio>
+    <p id="q">七</p>
+    <p id="h">号</p>
+    <p id="b">步</p>
+    <p id="l">黎</p>
     <p id="one"> <font color="#ffc0cb">云自闲浮风自过</font></p>
     <p id="two"> <font color="blue">半心清明半心浊</font></p>
 </body>
