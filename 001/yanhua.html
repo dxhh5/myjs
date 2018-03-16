@@ -38,6 +38,8 @@
     hue = 120,//初始色调
     limiterTotal = 5,//点击烟花产生的时间间隔
     limiterTick = 0,//点击的初始时间
+        timerTotal=80,//自动产生烟花的时间间隔
+        timerTick=0,
     mousedown = false,
         mx,my;
     can.width=cw;
@@ -71,10 +73,10 @@
         {
             this.coordinates.push([this.x,this.y]);
         }
-        this.angle=Math.atan2(ty-sy,tx-sx);
+        this.angle=Math.atan2(ty-sy,tx-sx);//计算烟花移动轨迹和x轴的角度
         this.speed=2;
         this.acceleration=1.05;
-        this.brightness=random(50,70);
+        this.brightness=random(50,80);//烟花颜色的亮度
         this.targetRadius=1;
 
     }
@@ -114,6 +116,7 @@
         ctx.strokeStyle=
             "hsl("+hue+",100%,"+this.brightness+"%)";
         ctx.stroke();
+        //绘制目标点的提示圆
         ctx.beginPath();
         ctx.arc(this.tx,this.ty,this.targetRadius,0,360,false);
         ctx.stroke();
@@ -122,8 +125,9 @@
     function  Particles(x,y) {
         this.x=x;
         this.y=y;
-        this.coordinates=[];
+        this.coordinates=[];//烟花粒子集合
         this.coordinateCount=5;
+        //把坐标点添加到坐标集合
         while(this.coordinateCount--)
         {
             this.coordinates.push([this.x,this.y]);
@@ -231,7 +235,7 @@
 
     },false);
     window.onload=loop;
-    
+
 
 </script>
 </body>
