@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>yanhuo</title>
+    <!--清除默认的留白边框-->
+    <style type="text/css">
+        *{
+            margin:0;
+            padding:0;
+        }
+        html{
+            height: 100%;/*这里的100%相对于浏览器窗口算的*/
+        }
+        body{
+            height: 100%; /*这里不设置一下body， body的默认高度为0    这里的100%是相对于父元素的高度计算*/
+            background: #000000;
+            overflow: hidden;/*超出隐藏*/
+        }
+        .firework{
+            position: absolute;/*定位一下*/
+            width:10px;
+            height:50px;
+            background: red;
+            border-radius: 50%; /*圆角*/
+        }
+        .fire{
+            position: absolute;
+            width:8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+
+        }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    /*
+    面向过程的思维：
+    1 鼠标点击document文档 生成子弹(用div)
+    2 子弹往上运动，移动到鼠标点击位置
+    3 当子弹移动到点击位置的时候 生成烟花碎片
+    4 让烟花碎片分开 形成烟花效果
+    */
+    var timer = null;//定义一个timer变量  这里如果不写 =null 的话  timer输出会是undifined
+    var mark=true;
+    var x,y,h;
+    document.onclick=function (e) {    //这里括号（）里的e是  形参。
+
+        var e = e || window.event;
+        x = e.clientX,//获取鼠标点击处的x y坐标
+        y = e.clientY;
+        //获取body的高度
+        h = document.body.clientHeight;
+        //console.log(h)
+        //console.log(this)//this的作用域
+        //console.log(arguments[0])//实参列表
+        //鼠标点击document文档 生成子弹
+        //创建一个div元素
+        if (mark)
+        {
+            mark=false;
+            createFirework();
+        }
+
+
+    }
+
+
+    function createFirework() {
+        var oDiv = document.createElement("div");
+        oDiv.className = "firework";
+        oDiv.style.left = x + "px";
+        oDiv.style.top = h + "px";
+        oDiv.style.background=color1();   //把随机颜色赋给子弹
+        //把div添加到body里面
+        document.body.appendChild(oDiv);
+
+        //子弹往上运动，移动到鼠标点击位置
+        //子弹往上移动的速度值
+        var speed = 10;
+
+        timer=setInterval(function () {
+            //子弹的新位置等于原来的位置加上变化量
+            oDiv.style.top = oDiv.offsetTop - speed + "px";
+            //当移动到鼠标点击位置的y坐标值就停止运动
+            if(oDiv.offsetTop<=y)
+            {
+                oDiv.style.top = y+"px";
+                //清除定时器
+                clearInterval(timer);
+                //清除子弹
+                document.body.removeChild(oDiv);
+                //3 当子弹移动到点击位置的时候 生成烟花碎片
+                createFires();
+            }
+            //console.log("清除了")
+        },1000/60);     // 这里是1000/60的原因是，浏览器的分辨率是每秒60次， 1000/60，大于或者小于这个值都会感到卡顿
+    }
+    function createFires() {
+        var n =Math.ceil(Math.random()*50)+50;
+        var fires=[];
+
+        for (var i=0;i<n;i++)
+        {
+            fires[i] = document.createElement("div");
+            fires[i].className = "fire";
+            fires[i].style.left=x+"px";
+            fires[i].style.top = y+"px";
+            fires[i].style.background=color1();//把随机颜色赋给烟花碎片
+            //给每个粒子添加自定义的速度值
+            fires[i].speedX=Math.random()*20-10;//生成-10到10之间的随机数
+            fires[i].speedY=Math.random()*20-10;//生成-10到10之间的随机数
+            document.body.appendChild(fires[i]);
+        }
+        setInterval(function() {
+            for (var i=0;i<n;i++)
+            {
+                fires[i].style.left=fires[i].offsetLeft+
+                    fires[i].speedX+"px";
+                fires[i].style.top=fires[i].offsetTop+
+                    fires[i].speedY+"px";
+                fires[i].speedY +=0.5;   //给一个0.5的重力加速度
+                if(fires[i].offsetTop>h ||fires[i].offsetLeft<0||fires[i].offsetLeft>document.body.clientWidth)
+                {
+                    document.body.removeChild(fires[i]);
+
+                }
+            }
+        },1000/60);
+        mark=true;
+
+
+    }
+//生成随机颜色   /*rgb颜色方法*/
+    function color1() {/*rgb颜色方法*/
+        var  r =Math.floor(Math.random()*256);
+        var  g =Math.floor(Math.random()*256);
+        var  b =Math.floor(Math.random()*256);
+        return "rgb("+r+","+g+","+b+")"
+    }
+//十六进制方法
+    function color2() {
+        return "#"+function (color) {
+            return new Array(7-length).join("0")+color             //length获取字符串的长度
+        }((Math.random()*0x1000000 <<0)).toString(16)
+
+    }
+    //位运算方法
+    function color3() {
+        return "#"+(~~(Math.random()*(1<<24))).toString(16)
+
+    }
+
+</script>
+</body>
+</html>
